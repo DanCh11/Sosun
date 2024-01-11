@@ -2,6 +2,7 @@ package de.daycu.sosun.unit.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.daycu.sosun.controllers.PhoneNumberController;
+import de.daycu.sosun.models.PhoneNumber;
 import de.daycu.sosun.services.PhoneNumberService;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,13 +18,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static de.daycu.sosun.utils.Fixtures.phoneNumber;
 import static de.daycu.sosun.utils.Fixtures.phoneNumbers;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -78,7 +81,6 @@ public class PhoneNumberControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath(JSON_PATH, is(EXPECTED_PHONE_NUMBER)))
                 .andExpect(jsonPath("$", notNullValue()));
-
     }
 
     @Test
@@ -96,13 +98,35 @@ public class PhoneNumberControllerTest {
     @Test
     public void deletePhoneNumberTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                .delete("/{id}", phoneNumber.getId())
+                .delete("/deletePhoneNumberById/{id}", phoneNumber.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         verify(phoneNumberService, times(1)).deletePhoneNumberById(phoneNumber.getId());
+    }
 
+    @Test
+    public void deletePhoneNumberListById() throws Exception {
+        List<Long> ids = extractIds(phoneNumbers);
+
+        String idsString = ids.stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(","));
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .delete("/deletePhoneNumberListById/{ids}", idsString)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(phoneNumberService, times(1)).deletePhoneNumberListById(ids);
+    }
+
+    private List<Long> extractIds(List<PhoneNumber> phoneNumbers) {
+        return phoneNumbers.stream()
+                .map(PhoneNumber::getId)
+                .collect(Collectors.toList());
     }
 
 }

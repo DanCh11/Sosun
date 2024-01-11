@@ -5,6 +5,8 @@ import de.daycu.sosun.services.PhoneNumberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class PhoneNumberController {
 
@@ -26,9 +28,13 @@ public class PhoneNumberController {
         return phoneNumberService.findAll();
     }
 
-    @DeleteMapping(path = "{id}")
-    public void deletePhoneNumber(@PathVariable Long id) {
+    @DeleteMapping(path = "deletePhoneNumberById/{id}")
+    public void deletePhoneNumberById(@PathVariable Long id) {
         phoneNumberService.deletePhoneNumberById(id);
     }
 
+    @DeleteMapping(path = "deletePhoneNumberListById/{ids}")
+    public void deletePhoneNumberListById(@PathVariable List<Long> ids) {
+        phoneNumberService.deletePhoneNumberListById(ids);
+    }
 }

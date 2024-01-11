@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static de.daycu.sosun.utils.Fixtures.phoneNumber;
@@ -69,14 +71,21 @@ public class PhoneNumberServiceTest {
 
     @Test
     public void deletePhoneNumberListTest() {
-        phoneNumberService.deletePhoneNumberList(phoneNumbers);
-        verify(phoneNumberRepository, times(1)).deleteAll(phoneNumbers);
+        List<Long> ids = extractIds(phoneNumbers);
+        phoneNumberService.deletePhoneNumberListById(ids);
+        verify(phoneNumberRepository, times(1)).deleteAllById(ids);
     }
 
     @Test
     public void deleteAllPhoneNumbersTest() {
         phoneNumberService.deleteAllPhoneNumbers();
         verify(phoneNumberRepository, times(1)).deleteAll();
+    }
+
+    private List<Long> extractIds(List<PhoneNumber> phoneNumbers) {
+        return phoneNumbers.stream()
+                .map(PhoneNumber::getId)
+                .collect(Collectors.toList());
     }
 
 }

@@ -5,6 +5,8 @@ import de.daycu.sosun.repositories.PhoneNumberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PhoneNumberService {
 
@@ -27,8 +29,8 @@ public class PhoneNumberService {
         phoneNumberRepository.deleteById(id);
     }
 
-    public void deletePhoneNumberList(Iterable<PhoneNumber> phoneNumbers) {
-        phoneNumberRepository.deleteAll(phoneNumbers);
+    public void deletePhoneNumberListById(List<Long> ids) {
+        phoneNumberRepository.deleteAllById(ids);
     }
 
     public void deleteAllPhoneNumbers() {
