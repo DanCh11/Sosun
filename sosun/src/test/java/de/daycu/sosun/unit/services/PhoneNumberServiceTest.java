@@ -4,7 +4,7 @@ import de.daycu.sosun.models.PhoneNumber;
 import de.daycu.sosun.repositories.PhoneNumberRepository;
 import de.daycu.sosun.services.PhoneNumberService;
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -54,10 +54,8 @@ public class PhoneNumberServiceTest {
 
     @Test
     public void findAllTest() {
-
         when(phoneNumberRepository.findAll()).thenReturn(phoneNumbers);
         Iterable<PhoneNumber> result = phoneNumberService.findAll();
-
         verify(phoneNumberRepository, times(1)).findAll();
 
          assertEquals(2, StreamSupport.stream(result.spliterator(), false).count());
