@@ -2,11 +2,9 @@ package de.daycu.sosun.unit.services;
 
 import de.daycu.sosun.models.PhoneNumber;
 import de.daycu.sosun.services.EncryptionService;
-import org.jasypt.encryption.StringEncryptor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 
 import java.util.List;
 import java.util.stream.Collectors;
