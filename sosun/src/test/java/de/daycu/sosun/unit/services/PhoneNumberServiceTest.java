@@ -2,13 +2,18 @@ package de.daycu.sosun.unit.services;
 
 import de.daycu.sosun.models.PhoneNumber;
 import de.daycu.sosun.repositories.PhoneNumberRepository;
+import de.daycu.sosun.services.EncryptionService;
 import de.daycu.sosun.services.PhoneNumberService;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,24 +25,32 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
+@ExtendWith(SpringExtension.class)
 public class PhoneNumberServiceTest {
 
     @Mock
     private PhoneNumberRepository phoneNumberRepository;
+
+    @Mock
+    private EncryptionService encryptionService;
 
     @InjectMocks
     private PhoneNumberService phoneNumberService;
 
 
     @Before
-    public void setup() throws Exception {
-        MockitoAnnotations.openMocks(this).close();
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
     public void addPhoneNumberTest() {
-        when(phoneNumberRepository.save(phoneNumber)).thenReturn(phoneNumber);
+        when(encryptionService.encrypt(anyString())).thenReturn("encryptedPhoneNumber");
+        when(phoneNumberRepository.save(any(PhoneNumber.class))).thenReturn(phoneNumber);
+
         PhoneNumber result = phoneNumberService.addPhoneNumber(phoneNumber);
+
+        verify(encryptionService, times(1)).encrypt(anyString());
         verify(phoneNumberRepository, times(1)).save(phoneNumber);
 
         assertEquals(phoneNumber, result);
@@ -45,9 +58,13 @@ public class PhoneNumberServiceTest {
 
     @Test
     public void addPhoneNumbersTest() {
-        when(phoneNumberRepository.saveAll(phoneNumbers)).thenReturn(phoneNumbers);
+        when(encryptionService.encrypt(anyString())).thenReturn("encryptedPhoneNumber");
+        when(phoneNumberRepository.saveAll(anyIterable())).thenReturn(phoneNumbers);
+
         Iterable<PhoneNumber> result = phoneNumberService.addPhoneNumbers(phoneNumbers);
-        verify(phoneNumberRepository, times(1)).saveAll(phoneNumbers);
+
+        verify(encryptionService, times(phoneNumbers.size())).encrypt(anyString());
+        verify(phoneNumberRepository, times(1)).saveAll(anyIterable());
 
         assertEquals(phoneNumbers, result);
     }
@@ -55,10 +72,14 @@ public class PhoneNumberServiceTest {
     @Test
     public void findAllTest() {
         when(phoneNumberRepository.findAll()).thenReturn(phoneNumbers);
-        Iterable<PhoneNumber> result = phoneNumberService.findAll();
-        verify(phoneNumberRepository, times(1)).findAll();
+        when(encryptionService.decrypt(anyString())).thenAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
 
-         assertEquals(2, StreamSupport.stream(result.spliterator(), false).count());
+        Iterable<PhoneNumber> result = phoneNumberService.findAll();
+
+        verify(phoneNumberRepository, times(1)).findAll();
+        verify(encryptionService, times(phoneNumbers.size())).decrypt(anyString());
+
+        assertEquals(2, StreamSupport.stream(result.spliterator(), false).count());
     }
 
     @Test

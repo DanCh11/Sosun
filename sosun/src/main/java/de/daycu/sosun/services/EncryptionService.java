@@ -1,7 +1,8 @@
 package de.daycu.sosun.services;
 
-import org.jasypt.encryption.StringEncryptor;
+import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -10,8 +11,17 @@ import java.util.stream.StreamSupport;
 @Service
 public class EncryptionService {
 
+    private final BasicTextEncryptor encryptor;
+
     @Autowired
-    private StringEncryptor encryptor;
+    public EncryptionService(@Value("${jasypt.encryptor.password}") String encryptionPassword) {
+        this.encryptor = new BasicTextEncryptor();
+        setEncryptionPassword(encryptionPassword);
+    }
+
+    private void setEncryptionPassword(String encryptionPassword) {
+        encryptor.setPassword(encryptionPassword);
+    }
 
     public String encrypt(String entity) {
         return encryptor.encrypt(entity);

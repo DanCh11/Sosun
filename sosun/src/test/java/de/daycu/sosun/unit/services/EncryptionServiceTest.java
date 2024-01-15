@@ -6,6 +6,7 @@ import org.jasypt.encryption.StringEncryptor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,9 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @SpringBootTest
 public class EncryptionServiceTest {
-
-    @Autowired
-    private StringEncryptor encryptor;
     @Autowired
     private EncryptionService encryptionService;
 

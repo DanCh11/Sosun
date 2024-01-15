@@ -13,16 +13,34 @@ public class PhoneNumberService {
     @Autowired
     private PhoneNumberRepository phoneNumberRepository;
 
+    @Autowired
+    private EncryptionService encryptionService;
+
+
     public PhoneNumber addPhoneNumber(PhoneNumber phoneNumber) {
+        String encryptedPhoneNumber = encryptionService.encrypt(phoneNumber.getPhoneNumber());
+        phoneNumber.setPhoneNumber(encryptedPhoneNumber);
+
         return phoneNumberRepository.save(phoneNumber);
     }
 
     public Iterable<PhoneNumber> addPhoneNumbers(Iterable<PhoneNumber> phoneNumbers) {
+        for (PhoneNumber phoneNumber : phoneNumbers) {
+            String encryptedNumber = encryptionService.encrypt(phoneNumber.getPhoneNumber());
+            phoneNumber.setPhoneNumber(encryptedNumber);
+        }
+
         return phoneNumberRepository.saveAll(phoneNumbers);
     }
 
     public Iterable<PhoneNumber> findAll() {
-        return phoneNumberRepository.findAll();
+        Iterable<PhoneNumber> phoneNumbers = phoneNumberRepository.findAll();
+        for (PhoneNumber phoneNumber : phoneNumbers) {
+            String decryptedNumber = encryptionService.decrypt(phoneNumber.getPhoneNumber());
+            phoneNumber.setPhoneNumber(decryptedNumber);
+        }
+
+        return phoneNumbers;
     }
 
     public void deletePhoneNumberById(Long id) {
