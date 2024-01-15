@@ -42,4 +42,5 @@ public class EncryptionService {
                 .map(encryptor::decrypt)
                 .collect(Collectors.toList());
     }
+
 }
