@@ -1,9 +1,18 @@
 package de.daycu.sosun.utils;
 
+import de.daycu.sosun.exceptions.UnsupportedFileFormatException;
 import de.daycu.sosun.models.PhoneNumber;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class Fixtures {
 
@@ -13,4 +22,30 @@ public final class Fixtures {
         new PhoneNumber(1L, "+4917676478693"),
         new PhoneNumber(2L, "+491234567890")
     );
+
+    public static MockMultipartFile csvWithPhoneNumbers() throws UnsupportedFileFormatException {
+        try (StringWriter stringWriter = new StringWriter();
+             CSVPrinter csvPrinter = new CSVPrinter(stringWriter, CSVFormat.DEFAULT
+                     .builder()
+                     .setHeader("ID", "PhoneNumber")
+                     .setSkipHeaderRecord(true)
+                     .build())) {
+
+            for (PhoneNumber phoneNumber : phoneNumbers) {
+                csvPrinter.printRecord(phoneNumber.getId(), phoneNumber.getPhoneNumber());
+            }
+
+            String csvContent = stringWriter.toString();
+
+            return new MockMultipartFile(
+                    "phoneNumbers.csv",
+                    "phoneNumbers.csv",
+                    "text/csv",
+                    csvContent.getBytes());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        throw new UnsupportedFileFormatException("Only CSV files are supported.");
+    }
 }

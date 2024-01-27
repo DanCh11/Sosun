@@ -3,6 +3,7 @@ package de.daycu.sosun.unit.services;
 import de.daycu.sosun.models.PhoneNumber;
 import de.daycu.sosun.services.EncryptionService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
