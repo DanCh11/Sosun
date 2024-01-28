@@ -79,16 +79,14 @@ public class PhoneNumberControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .multipart("/addPhoneNumbers")
                 .file(csvWithPhoneNumbers().getName(), csvWithPhoneNumbers().getBytes())
-//                .post("/addPhoneNumbers")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
-                .accept(MediaType.APPLICATION_JSON))
+                .accept(MediaType.APPLICATION_JSON)
 
 
-//                .content(content))
+                .content(content))
                 .andExpect(status().isOk())
-                .andDo(print());
-//                .andExpect(jsonPath(JSON_PATH, is(EXPECTED_PHONE_NUMBER)));
-//                .andExpect(jsonPath("$", notNullValue()));
+//                .andExpect(jsonPath(JSON_PATH, is(EXPECTED_PHONE_NUMBER)))
+                .andExpect(jsonPath("$", notNullValue()));
     }
 
     @Test

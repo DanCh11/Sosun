@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class CSVHelper {
     }
 
     public static Iterable<PhoneNumber> csvToPhoneNumbers(InputStream inputStream) {
-        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
              CSVParser csvParser = new CSVParser(
                      fileReader,
                      CSVFormat.DEFAULT.builder().setHeader(HEADERS).build())) {
@@ -30,6 +31,11 @@ public class CSVHelper {
             List<PhoneNumber> phoneNumbers = new ArrayList<PhoneNumber>();
 
             for (CSVRecord csvRecord : csvParser.getRecords()) {
+
+                if (csvRecord.getRecordNumber() == 1) {
+                    continue;
+                }
+
                 PhoneNumber phoneNumber = new PhoneNumber(
                         Long.parseLong(csvRecord.get("ID")),
                         csvRecord.get("PhoneNumber"));
