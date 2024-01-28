@@ -1,26 +1,25 @@
 package de.daycu.sosun.unit.services;
 
+import de.daycu.sosun.exceptions.UnsupportedFileFormatException;
 import de.daycu.sosun.models.PhoneNumber;
 import de.daycu.sosun.repositories.PhoneNumberRepository;
 import de.daycu.sosun.services.EncryptionService;
 import de.daycu.sosun.services.PhoneNumberService;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static de.daycu.sosun.utils.Fixtures.phoneNumber;
-import static de.daycu.sosun.utils.Fixtures.phoneNumbers;
+import static de.daycu.sosun.utils.Fixtures.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -43,6 +42,8 @@ public class PhoneNumberServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
+
+
     @Test
     public void addPhoneNumberTest() {
         when(encryptionService.encrypt(anyString())).thenReturn("encryptedPhoneNumber");
@@ -57,11 +58,14 @@ public class PhoneNumberServiceTest {
     }
 
     @Test
-    public void addPhoneNumbersTest() {
+    public void addPhoneNumbersTest() throws UnsupportedFileFormatException, IOException {
+        
         when(encryptionService.encrypt(anyString())).thenReturn("encryptedPhoneNumber");
         when(phoneNumberRepository.saveAll(anyIterable())).thenReturn(phoneNumbers);
 
-        Iterable<PhoneNumber> result = phoneNumberService.addPhoneNumbers(phoneNumbers);
+        Iterable<PhoneNumber> result = phoneNumberService.addPhoneNumbers(csvWithPhoneNumbers());
+
+        System.out.println(result);
 
         verify(encryptionService, times(phoneNumbers.size())).encrypt(anyString());
         verify(phoneNumberRepository, times(1)).saveAll(anyIterable());

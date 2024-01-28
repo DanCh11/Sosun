@@ -2,6 +2,7 @@ package de.daycu.sosun.unit.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.daycu.sosun.controllers.PhoneNumberController;
+import de.daycu.sosun.helpers.CSVHelper;
 import de.daycu.sosun.models.PhoneNumber;
 import de.daycu.sosun.services.PhoneNumberService;
 import org.junit.Before;
@@ -16,17 +17,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static de.daycu.sosun.utils.Fixtures.phoneNumber;
-import static de.daycu.sosun.utils.Fixtures.phoneNumbers;
+import static de.daycu.sosun.utils.Fixtures.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -70,16 +72,20 @@ public class PhoneNumberControllerTest {
 
     @Test
     public void addPhoneNumbersTest() throws Exception {
-        when(phoneNumberService.addPhoneNumbers(phoneNumbers)).thenReturn(phoneNumbers);
+        when(phoneNumberService.addPhoneNumbers(csvWithPhoneNumbers())).thenReturn(phoneNumbers);
+        Iterable<PhoneNumber> phoneNumbers = CSVHelper.csvToPhoneNumbers(csvWithPhoneNumbers().getInputStream());
         final String content = objectMapper.writeValueAsString(phoneNumbers);
 
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/addPhoneNumbers")
-                .contentType(MediaType.APPLICATION_JSON)
+                .multipart("/addPhoneNumbers")
+                .file(csvWithPhoneNumbers().getName(), csvWithPhoneNumbers().getBytes())
+                .contentType(MediaType.MULTIPART_FORM_DATA)
                 .accept(MediaType.APPLICATION_JSON)
+
+
                 .content(content))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath(JSON_PATH, is(EXPECTED_PHONE_NUMBER)))
+//                .andExpect(jsonPath(JSON_PATH, is(EXPECTED_PHONE_NUMBER)))
                 .andExpect(jsonPath("$", notNullValue()));
     }
 

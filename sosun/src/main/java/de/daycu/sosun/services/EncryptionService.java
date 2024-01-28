@@ -11,7 +11,7 @@ import java.util.stream.StreamSupport;
 @Service
 public class EncryptionService {
 
-    private final BasicTextEncryptor encryptor;
+    private BasicTextEncryptor encryptor;
 
     @Autowired
     public EncryptionService(@Value("${jasypt.encryptor.password}") String encryptionPassword) {
