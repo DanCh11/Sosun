@@ -57,20 +57,6 @@ public class PhoneNumberControllerTest {
     }
 
     @Test
-    public void addPhoneNumberTest() throws Exception {
-        when(phoneNumberService.addPhoneNumber(phoneNumber)).thenReturn(phoneNumber);
-        final String content = objectMapper.writeValueAsString(phoneNumber);
-
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/addPhoneNumber")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(content))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", notNullValue()));
-    }
-
-    @Test
     public void addPhoneNumbersTest() throws Exception {
         when(phoneNumberService.addPhoneNumbers(csvWithPhoneNumbers())).thenReturn(phoneNumbers);
         Iterable<PhoneNumber> phoneNumbers = CSVHelper.csvToPhoneNumbers(csvWithPhoneNumbers().getInputStream());

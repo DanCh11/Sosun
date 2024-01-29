@@ -15,11 +15,6 @@ public class PhoneNumberController {
     @Autowired
     private PhoneNumberService phoneNumberService;
 
-    @PostMapping("/addPhoneNumber")
-    public PhoneNumber addPhoneNumber(@RequestBody PhoneNumber phoneNumber) {
-        return phoneNumberService.addPhoneNumber(phoneNumber);
-    }
-
     @PostMapping("/addPhoneNumbers")
     public Iterable<PhoneNumber> addPhoneNumbers(@RequestBody MultipartFile file) throws IOException {
         return phoneNumberService.addPhoneNumbers(file);

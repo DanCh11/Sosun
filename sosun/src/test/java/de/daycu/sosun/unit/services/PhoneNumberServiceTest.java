@@ -42,21 +42,6 @@ public class PhoneNumberServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-
-
-    @Test
-    public void addPhoneNumberTest() {
-        when(encryptionService.encrypt(anyString())).thenReturn("encryptedPhoneNumber");
-        when(phoneNumberRepository.save(any(PhoneNumber.class))).thenReturn(phoneNumber);
-
-        PhoneNumber result = phoneNumberService.addPhoneNumber(phoneNumber);
-
-        verify(encryptionService, times(1)).encrypt(anyString());
-        verify(phoneNumberRepository, times(1)).save(phoneNumber);
-
-        assertEquals(phoneNumber, result);
-    }
-
     @Test
     public void addPhoneNumbersTest() throws UnsupportedFileFormatException, IOException {
         
