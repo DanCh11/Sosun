@@ -50,8 +50,6 @@ public class PhoneNumberServiceTest {
 
         Iterable<PhoneNumber> result = phoneNumberService.addPhoneNumbers(csvWithPhoneNumbers());
 
-        System.out.println(result);
-
         verify(encryptionService, times(phoneNumbers.size())).encrypt(anyString());
         verify(phoneNumberRepository, times(1)).saveAll(anyIterable());
 

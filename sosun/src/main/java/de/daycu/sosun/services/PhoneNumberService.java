@@ -9,7 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class PhoneNumberService {
@@ -24,12 +27,25 @@ public class PhoneNumberService {
         if (CSVHelper.hasCSVFormat(file)) {
             Iterable<PhoneNumber> phoneNumbers = CSVHelper.csvToPhoneNumbers(file.getInputStream());
 
-           for (PhoneNumber phoneNumber : phoneNumbers) {
-               String encryptedNumber = encryptionService.encrypt(phoneNumber.getPhoneNumber());
-               phoneNumber.setPhoneNumber(encryptedNumber);
-           }
 
-            return phoneNumberRepository.saveAll(phoneNumbers);
+            List<String> plainPhoneNumbers = StreamSupport.stream(phoneNumbers.spliterator(), false)
+                .map(PhoneNumber::getPhoneNumber)
+                .collect(Collectors.toList());
+            
+            Iterable<String> encryptedPhoneNumbers = encryptionService.encryptAll(plainPhoneNumbers);
+            Iterator<String> encryptedIterator = encryptedPhoneNumbers.iterator();
+
+            List<PhoneNumber> encryptedPhoneNumbersList = StreamSupport.stream(phoneNumbers.spliterator(), false)
+                .map(phoneNumber -> {
+                    PhoneNumber encryptedPhoneNumber = new PhoneNumber();
+                    encryptedPhoneNumber.setPhoneNumber(encryptedIterator.next());
+
+                    return encryptedPhoneNumber;
+                })
+                .collect(Collectors.toList());
+                
+
+            return phoneNumberRepository.saveAll(encryptedPhoneNumbersList);
 
         } else {
             throw new UnsupportedEncodingException("Only CSV files are supported.");
@@ -38,6 +54,7 @@ public class PhoneNumberService {
 
     public Iterable<PhoneNumber> findAll() {
         Iterable<PhoneNumber> phoneNumbers = phoneNumberRepository.findAll();
+
         for (PhoneNumber phoneNumber : phoneNumbers) {
             String decryptedNumber = encryptionService.decrypt(phoneNumber.getPhoneNumber());
             phoneNumber.setPhoneNumber(decryptedNumber);
