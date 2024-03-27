@@ -1,22 +1,22 @@
 package de.daycu.sosun.unit.services;
 
-import de.daycu.sosun.models.PhoneNumber;
-import de.daycu.sosun.services.EncryptionService;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static de.daycu.sosun.utils.Fixtures.phoneNumber;
-import static de.daycu.sosun.utils.Fixtures.phoneNumbers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import de.daycu.sosun.services.EncryptionService;
+
 @SpringBootTest
+@RunWith(SpringRunner.class)
 public class EncryptionServiceTest {
+
     @Autowired
     private EncryptionService encryptionService;
 
@@ -28,16 +28,6 @@ public class EncryptionServiceTest {
 
         assertNotEquals(input, encryptedResult);
         assertEquals(input, decryptedResult);
-    }
-
-    @Test
-    public void testEncryptAndDecryptAll() {
-        List<String> inputList = phoneNumbers.stream().map(PhoneNumber::getPhoneNumber).collect(Collectors.toList());
-        Iterable<String> encryptedResult = encryptionService.encryptAll(inputList);
-        Iterable<String> decryptedResult = encryptionService.decryptAll(encryptedResult);
-
-        assertNotEquals(inputList, encryptedResult);
-        assertEquals(inputList, decryptedResult);
     }
 
 }

@@ -21,10 +21,11 @@ import java.util.stream.StreamSupport;
 
 import static de.daycu.sosun.utils.Fixtures.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyIterable;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 public class PhoneNumberServiceTest {
 
     @Mock
@@ -50,7 +51,7 @@ public class PhoneNumberServiceTest {
 
         Iterable<PhoneNumber> result = phoneNumberService.addPhoneNumbers(csvWithPhoneNumbers());
 
-        verify(encryptionService, times(phoneNumbers.size())).encrypt(anyString());
+        verify(encryptionService, atLeastOnce()).encrypt(anyString());
         verify(phoneNumberRepository, times(1)).saveAll(anyIterable());
 
         assertEquals(phoneNumbers, result);

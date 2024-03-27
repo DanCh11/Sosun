@@ -1,10 +1,20 @@
 package de.daycu.sosun.unit.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.daycu.sosun.controllers.PhoneNumberController;
-import de.daycu.sosun.helpers.CSVHelper;
-import de.daycu.sosun.models.PhoneNumber;
-import de.daycu.sosun.services.PhoneNumberService;
+import static de.daycu.sosun.utils.Fixtures.csvWithPhoneNumbers;
+import static de.daycu.sosun.utils.Fixtures.phoneNumber;
+import static de.daycu.sosun.utils.Fixtures.phoneNumbers;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -17,20 +27,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static de.daycu.sosun.utils.Fixtures.*;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import de.daycu.sosun.controllers.PhoneNumberController;
+import de.daycu.sosun.helpers.CSVHelper;
+import de.daycu.sosun.models.PhoneNumber;
+import de.daycu.sosun.services.PhoneNumberService;
 
 @AutoConfigureMockMvc
 @WebMvcTest(PhoneNumberController.class)
@@ -71,7 +75,7 @@ public class PhoneNumberControllerTest {
 
                 .content(content))
                 .andExpect(status().isOk())
-//                .andExpect(jsonPath(JSON_PATH, is(EXPECTED_PHONE_NUMBER)))
+                // .andExpect(jsonPath(JSON_PATH, is(EXPECTED_PHONE_NUMBER)))
                 .andExpect(jsonPath("$", notNullValue()));
     }
 

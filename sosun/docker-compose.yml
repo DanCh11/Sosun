@@ -1,9 +1,10 @@
-version: '3.8'
+version: '3.1'
 
 services:
   postgres:
     image: postgres:13
     container_name: postgresql
+
     env_file:
       - env/.pg.env
     restart: unless-stopped

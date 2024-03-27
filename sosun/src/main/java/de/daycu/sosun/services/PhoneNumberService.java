@@ -27,25 +27,12 @@ public class PhoneNumberService {
         if (CSVHelper.hasCSVFormat(file)) {
             Iterable<PhoneNumber> phoneNumbers = CSVHelper.csvToPhoneNumbers(file.getInputStream());
 
+            for (PhoneNumber phoneNumber : phoneNumbers) {
+                String encryptedPhoneNumber = encryptionService.encrypt(phoneNumber.getPhoneNumber());
+                phoneNumber.setPhoneNumber(encryptedPhoneNumber);
+            }   
 
-            List<String> plainPhoneNumbers = StreamSupport.stream(phoneNumbers.spliterator(), false)
-                .map(PhoneNumber::getPhoneNumber)
-                .collect(Collectors.toList());
-            
-            Iterable<String> encryptedPhoneNumbers = encryptionService.encryptAll(plainPhoneNumbers);
-            Iterator<String> encryptedIterator = encryptedPhoneNumbers.iterator();
-
-            List<PhoneNumber> encryptedPhoneNumbersList = StreamSupport.stream(phoneNumbers.spliterator(), false)
-                .map(phoneNumber -> {
-                    PhoneNumber encryptedPhoneNumber = new PhoneNumber();
-                    encryptedPhoneNumber.setPhoneNumber(encryptedIterator.next());
-
-                    return encryptedPhoneNumber;
-                })
-                .collect(Collectors.toList());
-                
-
-            return phoneNumberRepository.saveAll(encryptedPhoneNumbersList);
+            return phoneNumberRepository.saveAll(phoneNumbers);
 
         } else {
             throw new UnsupportedEncodingException("Only CSV files are supported.");
