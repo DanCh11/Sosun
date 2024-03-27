@@ -1,18 +1,16 @@
 package de.daycu.sosun.services;
 
-import de.daycu.sosun.helpers.CSVHelper;
-import de.daycu.sosun.models.PhoneNumber;
-import de.daycu.sosun.repositories.PhoneNumberRepository;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import de.daycu.sosun.helpers.CSVHelper;
+import de.daycu.sosun.models.PhoneNumber;
+import de.daycu.sosun.repositories.PhoneNumberRepository;
 
 @Service
 public class PhoneNumberService {

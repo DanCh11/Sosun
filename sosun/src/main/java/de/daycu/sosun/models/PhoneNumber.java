@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Entity
 @Table(name = "PhoneNumbers")
@@ -19,8 +20,10 @@ public class PhoneNumber {
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         @Column(name = "ID")
+        @NonNull
         Long id;
-        
+
         @Column(name = "PhoneNumber")
+        @NonNull
         String phoneNumber;
 }

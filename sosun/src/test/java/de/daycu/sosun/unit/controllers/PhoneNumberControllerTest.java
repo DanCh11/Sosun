@@ -62,6 +62,8 @@ public class PhoneNumberControllerTest {
 
     @Test
     public void addPhoneNumbersTest() throws Exception {
+        System.out.println("CSV: " + csvWithPhoneNumbers());
+
         when(phoneNumberService.addPhoneNumbers(csvWithPhoneNumbers())).thenReturn(phoneNumbers);
         Iterable<PhoneNumber> phoneNumbers = CSVHelper.csvToPhoneNumbers(csvWithPhoneNumbers().getInputStream());
         final String content = objectMapper.writeValueAsString(phoneNumbers);
@@ -75,7 +77,6 @@ public class PhoneNumberControllerTest {
 
                 .content(content))
                 .andExpect(status().isOk())
-                // .andExpect(jsonPath(JSON_PATH, is(EXPECTED_PHONE_NUMBER)))
                 .andExpect(jsonPath("$", notNullValue()));
     }
 
