@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import de.daycu.sosun.helpers.CSVHelper;
-import de.daycu.sosun.models.PhoneNumber;
+import de.daycu.sosun.models.ContactPhoneNumber;
 import de.daycu.sosun.repositories.PhoneNumberRepository;
 
 @Service
@@ -21,11 +21,11 @@ public class PhoneNumberService {
     @Autowired
     private EncryptionService encryptionService;
 
-    public Iterable<PhoneNumber> addPhoneNumbers(MultipartFile file) throws IOException {
+    public Iterable<ContactPhoneNumber> addPhoneNumbers(MultipartFile file) throws IOException {
         if (CSVHelper.hasCSVFormat(file)) {
-            Iterable<PhoneNumber> phoneNumbers = CSVHelper.csvToPhoneNumbers(file.getInputStream());
+            Iterable<ContactPhoneNumber> phoneNumbers = CSVHelper.csvToPhoneNumbers(file.getInputStream());
 
-            for (PhoneNumber phoneNumber : phoneNumbers) {
+            for (ContactPhoneNumber phoneNumber : phoneNumbers) {
                 String encryptedPhoneNumber = encryptionService.encrypt(phoneNumber.getPhoneNumber());
                 phoneNumber.setPhoneNumber(encryptedPhoneNumber);
             }   
@@ -37,10 +37,10 @@ public class PhoneNumberService {
         }
     }
 
-    public Iterable<PhoneNumber> findAll() {
-        Iterable<PhoneNumber> phoneNumbers = phoneNumberRepository.findAll();
+    public Iterable<ContactPhoneNumber> findAll() {
+        Iterable<ContactPhoneNumber> phoneNumbers = phoneNumberRepository.findAll();
 
-        for (PhoneNumber phoneNumber : phoneNumbers) {
+        for (ContactPhoneNumber phoneNumber : phoneNumbers) {
             String decryptedNumber = encryptionService.decrypt(phoneNumber.getPhoneNumber());
             phoneNumber.setPhoneNumber(decryptedNumber);
         }

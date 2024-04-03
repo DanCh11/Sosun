@@ -1,7 +1,7 @@
 package de.daycu.sosun.utils;
 
 import de.daycu.sosun.exceptions.UnsupportedFileFormatException;
-import de.daycu.sosun.models.PhoneNumber;
+import de.daycu.sosun.models.ContactPhoneNumber;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.springframework.mock.web.MockMultipartFile;
@@ -14,11 +14,11 @@ import java.util.List;
 
 public final class Fixtures {
 
-    public static final PhoneNumber phoneNumber = new PhoneNumber(1L, "+4917676478693");
+    public static final ContactPhoneNumber phoneNumber = new ContactPhoneNumber(1L, "+4917676478693");
 
-    public static final List<PhoneNumber> phoneNumbers = Arrays.asList(
-        new PhoneNumber(1L, "+4917676478693"),
-        new PhoneNumber(2L, "+491234567890")
+    public static final List<ContactPhoneNumber> phoneNumbers = Arrays.asList(
+        new ContactPhoneNumber(1L, "+4917676478693"),
+        new ContactPhoneNumber(2L, "+491234567890")
     );
 
     public static MockMultipartFile csvWithPhoneNumbers() throws UnsupportedFileFormatException {
@@ -29,7 +29,7 @@ public final class Fixtures {
                      .setSkipHeaderRecord(true)
                      .build())) {
 
-            for (PhoneNumber phoneNumber : phoneNumbers) {
+            for (ContactPhoneNumber phoneNumber : phoneNumbers) {
                 csvPrinter.printRecord(phoneNumber.getId(), phoneNumber.getPhoneNumber());
             }
 

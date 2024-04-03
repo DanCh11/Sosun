@@ -1,6 +1,6 @@
 package de.daycu.sosun.helpers;
 
-import de.daycu.sosun.models.PhoneNumber;
+import de.daycu.sosun.models.ContactPhoneNumber;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -22,13 +22,13 @@ public class CSVHelper {
         return TYPE.equals(file.getContentType());
     }
 
-    public static Iterable<PhoneNumber> csvToPhoneNumbers(InputStream inputStream) {
+    public static Iterable<ContactPhoneNumber> csvToPhoneNumbers(InputStream inputStream) {
         try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
              CSVParser csvParser = new CSVParser(
                      fileReader,
                      CSVFormat.DEFAULT.builder().setHeader(HEADERS).build())) {
 
-            List<PhoneNumber> phoneNumbers = new ArrayList<PhoneNumber>();
+            List<ContactPhoneNumber> phoneNumbers = new ArrayList<ContactPhoneNumber>();
 
             for (CSVRecord csvRecord : csvParser.getRecords()) {
 
@@ -36,7 +36,7 @@ public class CSVHelper {
                     continue;
                 }
 
-                PhoneNumber phoneNumber = new PhoneNumber(
+                ContactPhoneNumber phoneNumber = new ContactPhoneNumber(
                         Long.parseLong(csvRecord.get("ID")),
                         csvRecord.get("PhoneNumber"));
 

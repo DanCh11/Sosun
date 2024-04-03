@@ -33,7 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.daycu.sosun.controllers.PhoneNumberController;
 import de.daycu.sosun.helpers.CSVHelper;
-import de.daycu.sosun.models.PhoneNumber;
+import de.daycu.sosun.models.ContactPhoneNumber;
 import de.daycu.sosun.services.PhoneNumberService;
 
 @AutoConfigureMockMvc
@@ -65,7 +65,7 @@ public class PhoneNumberControllerTest {
         System.out.println("CSV: " + csvWithPhoneNumbers());
 
         when(phoneNumberService.addPhoneNumbers(csvWithPhoneNumbers())).thenReturn(phoneNumbers);
-        Iterable<PhoneNumber> phoneNumbers = CSVHelper.csvToPhoneNumbers(csvWithPhoneNumbers().getInputStream());
+        Iterable<ContactPhoneNumber> phoneNumbers = CSVHelper.csvToPhoneNumbers(csvWithPhoneNumbers().getInputStream());
         final String content = objectMapper.writeValueAsString(phoneNumbers);
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -120,9 +120,9 @@ public class PhoneNumberControllerTest {
         verify(phoneNumberService, times(1)).deletePhoneNumberListById(ids);
     }
 
-    private List<Long> extractIds(List<PhoneNumber> phoneNumbers) {
+    private List<Long> extractIds(List<ContactPhoneNumber> phoneNumbers) {
         return phoneNumbers.stream()
-                .map(PhoneNumber::getId)
+                .map(ContactPhoneNumber::getId)
                 .collect(Collectors.toList());
     }
 

@@ -10,5 +10,5 @@ public class TwilioClient {
 
     @NonNull private String accountId;
     @NonNull private String authToken;
-    @NonNull private List<PhoneNumber> phoneNumbers;
+    @NonNull private List<ContactPhoneNumber> phoneNumbers;
 }
