@@ -13,19 +13,22 @@ import de.daycu.sosun.models.ContactPhoneNumber;
 @Service
 public class TwilioService {
     
-    @Value("${twilio.sid}")
     private String twilioSid;
-
-    @Value("${twilio.auth.token}")
     private String twilioAuthToken;
-
-    @Value("${twilio.number}")
     private String twilioPhoneNumber;
 
     @Autowired
     private PhoneNumberService phoneNumberService;
 
-    TwilioService() {
+    public TwilioService(
+        @Value("${twilio.sid}") String twilioSid,
+        @Value("${twilio.auth.token}") String twilioAuthToken,
+        @Value("${twilio.number}") String twilioPhoneNumber) {
+        
+        this.twilioSid = twilioSid;
+        this.twilioAuthToken = twilioAuthToken;
+        this.twilioPhoneNumber = twilioPhoneNumber;
+
         Twilio.init(twilioSid, twilioAuthToken);
     }
 
