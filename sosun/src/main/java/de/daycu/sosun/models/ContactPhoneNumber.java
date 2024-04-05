@@ -16,7 +16,7 @@ import lombok.NonNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class PhoneNumber {
+public class ContactPhoneNumber {
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         @Column(name = "ID")

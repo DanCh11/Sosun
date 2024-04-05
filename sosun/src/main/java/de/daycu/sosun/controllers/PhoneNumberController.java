@@ -1,6 +1,6 @@
 package de.daycu.sosun.controllers;
 
-import de.daycu.sosun.models.PhoneNumber;
+import de.daycu.sosun.models.ContactPhoneNumber;
 import de.daycu.sosun.services.PhoneNumberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +16,12 @@ public class PhoneNumberController {
     private PhoneNumberService phoneNumberService;
 
     @PostMapping("/addPhoneNumbers")
-    public Iterable<PhoneNumber> addPhoneNumbers(@RequestBody MultipartFile file) throws IOException {
+    public Iterable<ContactPhoneNumber> addPhoneNumbers(@RequestBody MultipartFile file) throws IOException {
         return phoneNumberService.addPhoneNumbers(file);
     }
 
     @GetMapping("/phoneNumbers")
-    public Iterable<PhoneNumber> findAll() {
+    public Iterable<ContactPhoneNumber> findAll() {
         return phoneNumberService.findAll();
     }
 
