@@ -10,6 +10,10 @@ import com.twilio.type.PhoneNumber;
 
 import de.daycu.sosun.models.ContactPhoneNumber;
 
+/**
+ * Service that sens an SMS with a specific message to a list 
+ * of phone numbers using Twilio.
+ */
 @Service
 public class TwilioService {
     

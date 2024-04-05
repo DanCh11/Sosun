@@ -14,6 +14,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a helper class that reads a given CSV File and returns
+ * the phone numbers out of it.
+ */
 public class CSVHelper {
     private static final String TYPE = "text/csv";
     private static final String[] HEADERS = {"ID", "PhoneNumber"};
