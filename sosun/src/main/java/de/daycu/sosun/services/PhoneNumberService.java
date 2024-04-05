@@ -12,6 +12,9 @@ import de.daycu.sosun.helpers.CSVHelper;
 import de.daycu.sosun.models.ContactPhoneNumber;
 import de.daycu.sosun.repositories.PhoneNumberRepository;
 
+/**
+ * Service that manipulates phone numbers added by user from a CSV File.
+ */
 @Service
 public class PhoneNumberService {
 

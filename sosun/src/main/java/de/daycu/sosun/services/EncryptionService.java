@@ -4,6 +4,9 @@ import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service that encrypts a given string object.
+ */
 @Service
 public class EncryptionService {
 
