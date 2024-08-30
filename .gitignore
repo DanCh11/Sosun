@@ -17,3 +17,6 @@ sosun/env/
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+.idea/
+.vscode/
+backend/database/docker/.env
