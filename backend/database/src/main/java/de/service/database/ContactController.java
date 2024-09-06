@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("contacts")
 public class ContactController {
 
   @Autowired
@@ -35,5 +34,10 @@ public class ContactController {
   @DeleteMapping("/delete-contact/{id}")
   public void deleteContactById(@PathVariable Long id) {
     contactService.deleteContactById(id);
+  }
+
+  @GetMapping("/test")
+  public String hello() {
+    return "Hallo";
   }
 }
