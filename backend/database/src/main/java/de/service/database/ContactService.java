@@ -2,19 +2,20 @@ package de.service.database;
 
 import de.service.database.exceptions.ContactNotFoundException;
 import de.service.database.exceptions.DuplicateContactException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ContactService implements ContactOperations {
+public class ContactService {
 
-  @Autowired
-  private ContactRepository contactRepository;
+  private final ContactRepository contactRepository;
 
-  @Override
+  public ContactService(ContactRepository contactRepository) {
+    this.contactRepository = contactRepository;
+  }
+
   public Contact addContact(Contact contact) {
     try {
       if (contactRepository.existsByPhoneNumber(contact.getPhoneNumber())) {
@@ -27,7 +28,6 @@ public class ContactService implements ContactOperations {
     }
   }
 
-  @Override
   public List<Contact> addContacts(List<Contact> contacts) {
     try {
       for (Contact contact : contacts) {
@@ -42,22 +42,13 @@ public class ContactService implements ContactOperations {
     }
   }
 
-  @Override
-  public List<Contact> updateContacts(List<Contact> contacts) {
-    try {
-      for (Contact contact : contacts) {
-        if (!contactRepository.existsById(contact.getId())) {
-          throw new ContactNotFoundException("Contact with id " + contact.getId() + " not found.");
-        }
-      }
-      return contactRepository.saveAll(contacts);
+  public Contact updateContact(Long id, Contact contactDetails) {
+    Contact updatedContact = contactRepository.findById(id).orElseThrow();
+    updatedContact.setPhoneNumber(contactDetails.getPhoneNumber());
 
-    } catch (DataAccessException e) {
-      throw new RuntimeException("Error accessing data while updating contact.", e);
-    }
+    return contactRepository.save(updatedContact);
   }
 
-  @Override
   public void deleteContacts(List<Contact> contacts) {
     try {
       contactRepository.deleteAll(contacts);
@@ -67,7 +58,6 @@ public class ContactService implements ContactOperations {
     }
   }
 
-  @Override
   public void deleteContactById(Long id) throws ContactNotFoundException, DataAccessException {
     try {
       contactRepository.deleteById(id);
@@ -76,4 +66,17 @@ public class ContactService implements ContactOperations {
       throw new RuntimeException("Error accessing data while deleting contact by id.", e);
     }
   }
+
+  public Contact findContactById(Long id) {
+      return contactRepository.findById(id).orElseThrow();
+  }
+
+  public List<Contact> findAllContacts() {
+    try {
+      return contactRepository.findAll();
+    } catch (DataAccessException e) {
+      throw new RuntimeException("Error accessing data while finding all contacts.", e);
+    }
+  }
+
 }
