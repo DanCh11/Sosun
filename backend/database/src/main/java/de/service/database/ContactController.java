@@ -21,11 +21,6 @@ public class ContactController {
     return contactService.addContacts(contacts);
   }
 
-  @PutMapping("/update-contacts")
-  public List<Contact> updateContacts(@RequestBody List<Contact> contacts) {
-    return contactService.updateContacts(contacts);
-  }
-
   @DeleteMapping("/delete-contacts/{contacts}")
   public void deleteContacts(@PathVariable List<Contact> contacts) {
     contactService.deleteContacts(contacts);
