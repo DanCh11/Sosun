@@ -2,19 +2,18 @@ package de.service.database;
 
 import de.service.database.exceptions.ContactNotFoundException;
 import de.service.database.exceptions.DuplicateContactException;
+import lombok.AllArgsConstructor;
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class ContactService {
 
   private final ContactRepository contactRepository;
-
-  public ContactService(ContactRepository contactRepository) {
-    this.contactRepository = contactRepository;
-  }
 
   public Contact addContact(Contact contact) {
     try {

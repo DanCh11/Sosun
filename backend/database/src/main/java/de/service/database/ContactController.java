@@ -3,12 +3,14 @@ package de.service.database;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import lombok.AllArgsConstructor;
+
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 public class ContactController {
 
-  @Autowired
   private ContactService contactService;
 
   @PostMapping("/add-contact")

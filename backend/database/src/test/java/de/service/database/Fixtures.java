@@ -8,13 +8,24 @@ import java.util.List;
  */
 public final class Fixtures {
 
-  public static final Contact bobsContact = new Contact(1L, "+49123123122");
-  public static final Contact billysContact = new Contact(2L, "+491237631321");
-  public static final Contact billysNewContact = new Contact(2L, "+491237631333");
+  public static final Contact bobsContact = Contact.builder()
+    .id(1L)
+    .phoneNumber("+49123123122")
+    .build();
+
+  public static final Contact billysContact = Contact.builder()
+    .id(2L)
+    .phoneNumber("+491237631321")
+    .build();
+
+  public static final Contact billysNewContact = Contact.builder()
+    .id(2L)
+    .phoneNumber("+491237631333")
+    .build();
 
   public static final List<Contact> bobsAndBillysContacts = Arrays.asList(
-          bobsContact,
-          billysContact
+    bobsContact,
+    billysContact
   );
 
 }
