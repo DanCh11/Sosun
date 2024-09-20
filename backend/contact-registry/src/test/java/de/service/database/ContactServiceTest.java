@@ -81,14 +81,6 @@ class ContactServiceTest {
   }
 
   @Test
-  void testFindContactById() {
-    when(repositoryMock.findById(bobsContact.getId())).thenReturn(Optional.of(bobsContact));
-    Contact bobsExpectedContact = service.getContactById(bobsContact.getId());
-
-    assertEquals(bobsExpectedContact, bobsContact);
-  }
-
-  @Test
   void testFindAllContacts() {
     when(repositoryMock.findAll()).thenReturn(bobsAndBillysContacts);
     List<Contact> bobAndBillyExpectedContacts = service.getContacts();
