@@ -17,8 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
-
-@ExtendWith({MockitoExtension.class, SpringExtension.class})
+@ExtendWith({ MockitoExtension.class, SpringExtension.class })
 class ContactServiceTest {
 
   @Mock
@@ -43,7 +42,7 @@ class ContactServiceTest {
 
   @Test
   void testAddContacts() {
-    when(repositoryMock.saveAll(Mockito.any(List.class))).thenReturn(bobsAndBillysContacts);
+    when(repositoryMock.saveAll(Mockito.anyList())).thenReturn(bobsAndBillysContacts);
     List<Contact> expectedContacts = service.addContacts(bobsAndBillysContacts);
 
     assertEquals(expectedContacts, bobsAndBillysContacts);
@@ -62,11 +61,12 @@ class ContactServiceTest {
   void testDeleteContacts() {
     final int NO_CONTACTS_LEFT = 0;
 
-    doNothing().when(repositoryMock).deleteAll(bobsAndBillysContacts);
-    service.deleteContacts(bobsAndBillysContacts);
-    verify(repositoryMock, times(1)).deleteAll(bobsAndBillysContacts);
+    doNothing().when(repositoryMock).deleteAllById(bobsAndBillysIds);
+    service.deleteContacts(bobsAndBillysIds);
 
-    assertEquals(service.findAllContacts().size(), NO_CONTACTS_LEFT);
+    verify(repositoryMock, times(1)).deleteAllById(bobsAndBillysIds);
+
+    assertEquals(service.getContacts().size(), NO_CONTACTS_LEFT);
   }
 
   @Test
@@ -77,13 +77,13 @@ class ContactServiceTest {
     service.deleteContactById(bobsContact.getId());
     verify(repositoryMock, times(1)).deleteById(bobsContact.getId());
 
-    assertEquals(service.findAllContacts().size(), NO_CONTACTS_LEFT);
+    assertEquals(service.getContacts().size(), NO_CONTACTS_LEFT);
   }
 
   @Test
   void testFindContactById() {
     when(repositoryMock.findById(bobsContact.getId())).thenReturn(Optional.of(bobsContact));
-    Contact bobsExpectedContact = service.findContactById(bobsContact.getId());
+    Contact bobsExpectedContact = service.getContactById(bobsContact.getId());
 
     assertEquals(bobsExpectedContact, bobsContact);
   }
@@ -91,7 +91,7 @@ class ContactServiceTest {
   @Test
   void testFindAllContacts() {
     when(repositoryMock.findAll()).thenReturn(bobsAndBillysContacts);
-    List<Contact> bobAndBillyExpectedContacts = service.findAllContacts();
+    List<Contact> bobAndBillyExpectedContacts = service.getContacts();
 
     assertEquals(bobAndBillyExpectedContacts, bobsAndBillysContacts);
   }

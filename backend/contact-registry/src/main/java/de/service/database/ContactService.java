@@ -41,6 +41,14 @@ public class ContactService {
     }
   }
 
+  public List<Contact> getContacts() {
+    try {
+      return contactRepository.findAll();
+    } catch (DataAccessException e) {
+      throw new RuntimeException("Error accessing data while finding all contacts.", e);
+    }
+  }
+
   public Contact updateContact(Long id, Contact contactDetails) {
     Contact updatedContact = contactRepository.findById(id).orElseThrow();
     updatedContact.setPhoneNumber(contactDetails.getPhoneNumber());
@@ -48,9 +56,9 @@ public class ContactService {
     return contactRepository.save(updatedContact);
   }
 
-  public void deleteContacts(List<Contact> contacts) {
+  public void deleteContacts(List<Long> ids) {
     try {
-      contactRepository.deleteAll(contacts);
+      contactRepository.deleteAllById(ids);
 
     } catch (DataAccessException e) {
       throw new RuntimeException("Error accessing data while deleting all contacts.", e);
@@ -63,18 +71,6 @@ public class ContactService {
 
     } catch (DataAccessException e) {
       throw new RuntimeException("Error accessing data while deleting contact by id.", e);
-    }
-  }
-
-  public Contact findContactById(Long id) {
-      return contactRepository.findById(id).orElseThrow();
-  }
-
-  public List<Contact> findAllContacts() {
-    try {
-      return contactRepository.findAll();
-    } catch (DataAccessException e) {
-      throw new RuntimeException("Error accessing data while finding all contacts.", e);
     }
   }
 

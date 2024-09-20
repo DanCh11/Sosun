@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @AllArgsConstructor
@@ -22,18 +23,18 @@ public class ContactController {
     return contactService.addContacts(contacts);
   }
 
-  @DeleteMapping("/delete-contacts/{contacts}")
-  public void deleteContacts(@PathVariable List<Contact> contacts) {
-    contactService.deleteContacts(contacts);
+  @GetMapping("/contacts")
+  public List<Contact> getContacts() {
+    return contactService.getContacts();
+  }
+
+  @DeleteMapping("/delete-contacts")
+  public void deleteContacts(@RequestBody List<Long> ids) {
+    contactService.deleteContacts(ids);
   }
 
   @DeleteMapping("/delete-contact/{id}")
-  public void deleteContactById(@PathVariable Long id) {
+  public void deleteContactById(@PathVariable("id") Long id) {
     contactService.deleteContactById(id);
-  }
-
-  @GetMapping("/test")
-  public String hello() {
-    return "Hallo";
   }
 }
