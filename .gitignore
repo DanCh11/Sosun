@@ -19,4 +19,4 @@ sosun/env/
 .classpath
 .idea/
 .vscode/
-backend/database/docker/.env
+backend/docker/.env
