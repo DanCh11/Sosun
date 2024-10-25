@@ -20,19 +20,6 @@
 
 	<dependencies>
 
-		<dependency>
-			<groupId>com.fasterxml.jackson.dataformat</groupId>
-			<artifactId>jackson-dataformat-csv</artifactId>
-			<version>2.18.0-rc1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>de.service</groupId>
-			<artifactId>contact-registry</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-
-
 	</dependencies>
 
 	<build>

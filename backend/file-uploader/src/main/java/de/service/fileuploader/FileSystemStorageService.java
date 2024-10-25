@@ -13,25 +13,25 @@ import java.nio.file.Paths;
 @Service
 public class FileSystemStorageService {
 
-    private final Path rootLocation;
+  private final Path rootLocation;
 
-    @Autowired
-    public FileSystemStorageService(StorageProperties storageProperties) {
-        if (!StringUtils.hasText(storageProperties.getLocation())) {
-            throw new IllegalArgumentException("File Upload Location Cannot Be Empty.");
-        }
-        this.rootLocation = Paths.get(storageProperties.getLocation());
-    }
+  @Autowired
+  public FileSystemStorageService(StorageProperties storageProperties) {
+      if (!StringUtils.hasText(storageProperties.getLocation())) {
+          throw new IllegalArgumentException("File Upload Location Cannot Be Empty.");
+      }
+      this.rootLocation = Paths.get(storageProperties.getLocation());
+  }
 
-    public void init() {
-        try {
-            Files.createDirectories(rootLocation);
-        } catch (IOException e) {
-            throw new StorageException("Could not initialize storage", e);
-        }
-    }
+  public void init() {
+      try {
+          Files.createDirectories(rootLocation);
+      } catch (IOException e) {
+          throw new StorageException("Could not initialize storage", e);
+      }
+  }
 
-    public Path loadFile(String filename) {
-        return rootLocation.resolve(filename);
-    }
+  public Path loadFile(String filename) {
+      return rootLocation.resolve(filename);
+  }
 }
