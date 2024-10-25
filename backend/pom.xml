@@ -19,6 +19,7 @@
   <modules>
     <module>contact-registry</module>
     <module>file-uploader</module>
+    <module>file-reader</module>
   </modules>
 
   <dependencyManagement>
