@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,19 +20,20 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 class FileSystemStorageServiceTest {
 
     private final static String CSV_FILE_PATH = "src/test/resources/mockPhoneNumbersList.csv";
+    private final static File CSV_FILE = new File(CSV_FILE_PATH);
 
     @MockBean
     private FileSystemStorageService fileSystemStorageService;
 
     @Test
-    void testLoad() {
-        when(this.fileSystemStorageService.loadFile(CSV_FILE_PATH)).thenReturn(Path.of(CSV_FILE_PATH));
+    void testLoad() throws IOException {
+        when(this.fileSystemStorageService.loadFile(CSV_FILE_PATH)).thenReturn(CSV_FILE);
 
-        Path path = this.fileSystemStorageService.loadFile(CSV_FILE_PATH);
+        File file = this.fileSystemStorageService.loadFile(CSV_FILE_PATH);
 
-        assertNotNull(path);
-        assertEquals(path.getFileName().toString(), "mockPhoneNumbersList.csv");
-        assertTrue(Files.exists(path), "CSV File exists");
+        assertNotNull(file);
+        assertEquals(file.getName(), "mockPhoneNumbersList.csv");
+        assertTrue(file.exists(), "CSV File exists");
     }
 
 }

@@ -1,6 +1,6 @@
 package de.service.fileuploader;
 
-import java.nio.file.Path;
+import java.io.File;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,8 +17,10 @@ public class FileSystemStorageController {
   private FileSystemStorageService fileSystemStorageService;
 
   @GetMapping("/file/{filename}")
-  public Path loadFile(@PathVariable("filename") String filename) {
+  public File loadFile(@PathVariable("filename") String filename) {
     return fileSystemStorageService.loadFile(filename);
   }
+  
+
 
 }

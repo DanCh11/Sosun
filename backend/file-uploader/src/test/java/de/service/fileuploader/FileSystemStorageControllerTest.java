@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.nio.file.Path;
+import java.io.File;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,8 @@ public class FileSystemStorageControllerTest {
 
   private final static String CSV_FILE_PATH = "src/test/resources/mockPhoneNumbersList.csv";
 
+  private final static File CSV_FILE = new File(CSV_FILE_PATH);
+
   @Autowired
   private MockMvc mockMvc;
 
@@ -29,13 +31,13 @@ public class FileSystemStorageControllerTest {
 
   @Test
   void testLoadFile() throws Exception {
-    when(fileSystemStorageService.loadFile(anyString())).thenReturn(Path.of(CSV_FILE_PATH));
+    when(fileSystemStorageService.loadFile(anyString())).thenReturn(CSV_FILE);
 
     ResultActions response = mockMvc
         .perform(get("/api/v1/storage/file/{CSV_FILE_PATH}", "mockPhoneNumbersList.csv")
             .contentType(MediaType.APPLICATION_JSON));
 
     response.andDo(print())
-        .andExpect(status().is2xxSuccessful());
+      .andExpect(status().is2xxSuccessful());
   }
 }

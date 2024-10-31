@@ -1,0 +1,1 @@
+GET http://localhost:8081/api/v1/storage/file/sample.txt HTTP/1.1
