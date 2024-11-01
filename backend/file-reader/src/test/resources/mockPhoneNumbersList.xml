@@ -1,0 +1,10 @@
+<contacts>
+    <contact>
+        <id>1</id>
+        <phone>+49123123123</phone>
+    </contact>
+    <contact>
+        <id>2</id>
+        <phone>+32123123343</phone>
+    </contact>
+</contacts>
