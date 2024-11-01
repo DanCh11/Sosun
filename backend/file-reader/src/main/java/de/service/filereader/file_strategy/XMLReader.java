@@ -1,6 +1,11 @@
-package de.service.filereader;
+package de.service.filereader.file_strategy;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+
+import de.service.filereader.Contact;
+import de.service.filereader.FileType;
+import de.service.filereader.FileTypeConstants;
+
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -9,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
+@FileType(FileTypeConstants.XML)
 public class XMLReader implements ReadStrategy {
 
   @Override

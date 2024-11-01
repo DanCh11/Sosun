@@ -1,8 +1,10 @@
-package de.service.filereader;
+package de.service.filereader.file_strategy;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import de.service.filereader.Contact;
 
 public interface ReadStrategy {
   List<Contact> read(File file) throws IOException;

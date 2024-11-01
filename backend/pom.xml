@@ -20,6 +20,7 @@
     <module>contact-registry</module>
     <module>file-uploader</module>
     <module>file-reader</module>
+    <module>eureka-server</module>
   </modules>
 
   <dependencyManagement>
@@ -28,6 +29,14 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
         <version>3.3.3</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+      
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>2023.0.2</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
